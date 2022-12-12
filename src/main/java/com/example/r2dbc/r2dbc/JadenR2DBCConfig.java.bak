@@ -1,0 +1,75 @@
+package com.example.r2dbc;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.r2dbc.ConnectionFactoryBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
+import org.springframework.r2dbc.core.DatabaseClient;
+import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
+import org.springframework.data.r2dbc.core.R2dbcEntityOperations;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.r2dbc.dialect.MySqlDialect;
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+
+import io.r2dbc.spi.ConnectionFactories;
+import io.r2dbc.spi.ConnectionFactory;
+import io.r2dbc.spi.ConnectionFactoryOptions;
+import reactor.core.publisher.Mono;
+
+
+@Configuration
+@EnableR2dbcRepositories (basePackages = "com.example.r2dbc")
+// @EnableR2dbcRepositories(basePackages = "com.example.r2dbc", entityOperationsRef = "mysqlR2dbcEntityOperations")
+public class JadenR2DBCConfig{
+    
+
+    @Autowired
+    private Environment env;
+    
+    @Bean("mysql")
+    public ConnectionFactory mysqlConnectionFactory() {
+        ConnectionFactory connectionFactory = ConnectionFactories.get(
+            "r2dbcs:mysql://jaden:jaden@192.168.0.28:3306/JADEN");
+            // "r2dbcs:mysql://jaden:jaden@192.168.0.28:3306/JADEN?" +
+            // "zeroDate=use_round&" +
+            // "sslMode=verify_identity&" +
+            // "useServerPrepareStatement=true&" +
+            // "tlsVersion=TLSv1.3%2CTLSv1.2%2CTLSv1.1&" +
+            // "sslCa=%2Fpath%2Fto%2Fmysql%2Fca.pem&" +
+            // "sslKey=%2Fpath%2Fto%2Fmysql%2Fclient-key.pem&" +
+            // "sslCert=%2Fpath%2Fto%2Fmysql%2Fclient-cert.pem&" +
+            // "sslKeyPassword=key-pem-password-in-here");
+        return connectionFactory;
+    }
+/*
+        Creating a Mono using Project Reactor    
+        Mono<Connection> connectionMono = Mono.from(connectionFactory.create());
+
+        ConnectionFactoryOptions options = ConnectionFactoryOptions.builder()
+            .option(ConnectionFactoryOptions.DRIVER, "pool")
+            .option(ConnectionFactoryOptions.PROTOCOL, "mysql")
+            .option(ConnectionFactoryOptions.HOST, "http://192.168.0.28")
+            .option(ConnectionFactoryOptions.PORT, 3306)
+            .option(ConnectionFactoryOptions.DATABASE, "JADEN")
+            .option(ConnectionFactoryOptions.USER, "jaden")
+            .option(ConnectionFactoryOptions.PASSWORD, "jaden")
+            // .option(Option.valueOf("locale"), "en_US")
+            .build();
+        return ConnectionFactories.get(options);
+    }
+    */
+    
+    // @Bean(name="mysqlR2dbcEntityOperations")
+    // public R2dbcEntityOperations mysqlR2dbcEntityOperations(@Qualifier("mysql") ConnectionFactory connectionFactory) {
+    //     // public R2dbcEntityOperations mysqlR2dbcEntityOperations(@Qualifier("mysql") ConnectionFactory connectionFactory) {
+
+    //     DatabaseClient databaseClient = DatabaseClient.create(connectionFactory);
+
+    //     return new R2dbcEntityTemplate(databaseClient, MySqlDialect.INSTANCE);
+    // }
+}

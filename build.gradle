@@ -1,0 +1,38 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.6'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'		//	FOR JDBC CONNECTION
+	// implementation 'org.springframework.boot:spring-boot-starter-data-jpa'		//	FOR JPA
+	implementation 'org.springframework.boot:spring-boot-starter-web'			//	FOR WEB RESTAPI
+	// implementation 'io.r2dbc:r2dbc-h2'											// JAVA IN MEMORY RDBMS
+	// implementation 'com.h2database:h2'											// JAVA IN MEMORY RDBMS
+	
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'		//	FOR REACTIVE SPRING WEBFLUX
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'	//	FOR R2DBC
+	// implementation 'com.github.jasync-sql:jasync-mysql:2.1.7'					//	FOR R2DBC MYSQL ( NOT OFFICIAL )
+    implementation 'dev.miku:r2dbc-mysql:0.8.2.RELEASE'							//	another r2dbc library
+	
+	runtimeOnly 'mysql:mysql-connector-java'									//	FOR MYSQL
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+	testCompileOnly 'org.projectlombok:lombok:1.18.24'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
